@@ -9,8 +9,8 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <style>
     .container{
-        max-width: 1000px;
-        max-height: 800px;
+        max-width: 65%;
+        max-height: 100%;
         height: 80%;
         margin: auto;
         background-color: rgb(200, 255, 255);
@@ -90,13 +90,13 @@
         margin-top: 0px;
     }
     input{
-        padding: 10px 20px;
+        padding: 5px 10px;
         font-size: medium;
         font-family: verdana;
     }
     </style>
 </head>
-<body onload='initialyze()'>
+<body>
     <div class="container">
         <h1>ToDoList</h1>
         <form class="inputs" >
@@ -106,11 +106,11 @@
                 <input class='button' type="reset" value="Limpar" onmouseover="PointerEvent">
                 <input class="button" type="button" value="Adicionar" onclick="newTitle()" onmouseover="PointerEvent" style="margin-left: 0px;"><br>
             </div>
-            <textarea id="Desc" cols="300" rows="6" placeholder="Descrição..." style="resize: none; font-size: 20px; font-family: verdana; margin-bottom: 5%;"></textarea>
+            <textarea id="Desc" cols="300" rows="5" placeholder="Descrição..." style="resize: none; font-size: 18px; font-family: verdana; margin-bottom: 2%;"></textarea>
         </form>
 
         <div class="todolist">
-            <div id="list" style="height: 320px; background-color: bisque;">
+            <div id="list" style="height: 200px; background-color: bisque;">
             </div>
         </div>
     </div>
@@ -118,22 +118,7 @@
 </body>
 <script type='text/javascript'>
 
-function initialize(){
-    idGenerator();
-}
-
 var Tasks = [];
-
-function idGenerator(){
-    var timestamp = new Date();
-    var id = 
-    timestamp.getHours().toString() + 
-    timestamp.getMinutes().toString() + 
-    timestamp.getSeconds().toString() +
-    timestamp.getMilliseconds().toString();
-
-    return id
-}
 
 function createTask(taskTitle, taskDesc, taskDeadLine){
     var Title = {
@@ -144,7 +129,7 @@ function createTask(taskTitle, taskDesc, taskDeadLine){
             DeadLine: taskDeadLine
         }
     };
-    Tasks.push(Title);
+    Tasks.push(Title); //ajax
 }
 
 function deleteTask(id){
@@ -171,6 +156,7 @@ function updateScreen(){
     var list = "<ul>";
 
     Tasks.forEach(Task => {
+        list += "<button class='remove' onclick='editTask(this)' id-data=" + Task.id + ">X</button>"
         list += "<button class='remove' onclick=removeTask(this) id-data=" + Task.id + ">X</button>"
         list += "<hr><li><h2 class='desc'>" + Task.data.Title + " || "
         list += Task.data.DeadLine + "</h2>"
@@ -182,11 +168,25 @@ function updateScreen(){
     document.getElementById("Title").value = "";
 }
 
+function editTask(Element){
+    console.log(Element)
+    var id = Element.getAttribute("id-data");
+
+
+
+    alterarTask(id); //ajax
+    updateScreen();
+}
+
+function alterarTask(){
+
+}
+
 function removeTask(Element){
     console.log(Element)
     var id = Element.getAttribute("id-data");
 
-    deleteTask(id);
+    deleteTask(id); //ajax
     updateScreen();
 }
 
