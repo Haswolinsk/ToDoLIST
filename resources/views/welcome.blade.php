@@ -138,28 +138,28 @@ function getTasks() {
             if (data.length > 0) {
                 const table = document.getElementsByTagName('tbody')[0];
                 table.innerHTML = "";
-                for (var i = 0; i < data.length; i++) {
-                    try {
+                for (var i = 0; i <data.length; i++) {
+                    try{
                         const row = table.insertRow(i);
-                        const list1 = row.insertCell(0);
-                        const list2 = row.insertCell(1);
-                        const list3 = row.insertCell(2);
-                        const list4 = row.insertCell(3);
-                        const list5 = row.insertCell(4);
-                        list1.innerHTML += "<button class='remove' onclick='edit(this)' id-data=" + data[i].id + ">X</button>";
-                        list2.innerHTML += "<button class='remove' onclick=deleteTask(this) id-data=" + data[i].id + ">X</button>";
-                        list3.innerHTML += "<hr><li><h2 class='desc'>" + data[i].Title + " || ";
-                        list4.innerHTML += data[i].DeadLine + "</h2>";
-                        list5.innerHTML += "<p class='desc'>" + data[i].Description+"</p></li>";
-                    } catch (error) {
+                        const cell1 = row.insertCell(0);
+                        const cell2 = row.insertCell(1);
+                        const cell3 = row.insertCell(2);
+                        const cell4 = row.insertCell(3);
+                        const cell5 = row.insertCell(4);
+                        cell1.innerHTML += "<hr><h2 class='desc'>" + data[i].task + " || ";
+                        cell2.innerHTML += data[i].deadline + "</h2>";
+                        cell3.innerHTML += "<p class='desc'>" + data[i].description+"</p>";
+                        cell4.innerHTML += "<button class='remove' onclick='edit("+ data[i].id +")' id-data=" + data[i].id + ">X</button>";
+                        cell5.innerHTML += "<button class='remove' onclick=deleteTask("+ data[i].id +")>X</button>";
+                    }catch(error){
                         console.log(error);
                     }
                 }
             } else {
                 var row = table.insertRow(0);
-                var list = row.insertlist(0);
+                var cell = row.insertCell(0);
 
-                list.innerHTML = 'No tasks';
+                cell.innerHTML = 'No tasks';
             }
 
 
@@ -186,9 +186,9 @@ function getTasks() {
 }
 
 function saveTasks() {
-    const task1 = document.getElementById('Title').value;
-    const task2 = document.getElementById('Desc').value;
-    const task3 = document.getElementById('DeadLine').value;
+    var task1 = document.getElementById('Title').value;
+    var task2 = document.getElementById('Desc').value;
+    var task3 = document.getElementById('DeadLine').value;
     $.ajax({
         type: "POST",
         url: "/todolist",
