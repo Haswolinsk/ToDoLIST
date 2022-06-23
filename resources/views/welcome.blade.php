@@ -85,7 +85,7 @@
         margin-bottom: 0px;
     }
     td{
-        width: 0%;
+        width: 4%;
     }
     input{
         padding: 5px 10px;
