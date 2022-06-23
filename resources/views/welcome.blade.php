@@ -40,6 +40,12 @@
         font-family: verdana;
         font-size: 16px ;
     }
+    .desc-remo{
+        word-break: break-all;
+        font-family: verdana;
+        font-size: 16px ;
+       
+    }
     .button{
         padding: 0px 12px;
         margin-left: auto;
@@ -86,7 +92,7 @@
         margin-bottom: 0px;
     }
     td{
-        width: 10%;
+        width: 0%;
     }
     hr{
         margin-top: 0px;
@@ -143,13 +149,11 @@ function getTasks() {
                         const cell1 = row.insertCell(0);
                         const cell2 = row.insertCell(1);
                         const cell3 = row.insertCell(2);
-                        const cell4 = row.insertCell(3);
-                        const cell5 = row.insertCell(4);
-                        cell1.innerHTML += "<p class='desc'>" + data[i].task + " ";
-                        cell2.innerHTML += "<p class='desc'>" + data[i].deadline + " ";
-                        cell3.innerHTML += "<p class='desc' style:'width: 60%;'>" + data[i].description+"</p>";
-                        cell4.innerHTML += "<button class='remove' onclick='openEditModal(${data[i].id},'${data[i].task}','${data[i].Desc}','${data[i].DeadLine}')' id-data=" + data[i].id + ">Edit</button>";
-                        cell5.innerHTML += "<button class='remove' onclick=deleteTask("+ data[i].id +")>X</button>";
+                        cell1.innerHTML += "<h2 class='desc'>" + data[i].task + " || " + data[i].deadline + "</h2>";
+                        cell2.innerHTML += "<p class='desc-remo'>" + data[i].description+"</p>";
+                        cell3.innerHTML += "<button class='remove' onclick=deleteTask("+ data[i].id +")>X</button>";
+                        cell3.innerHTML += "<button class='remove' onclick='openEditModal(${data[i].id},'${data[i].task}','${data[i].Desc}','${data[i].DeadLine}')' id-data=" + data[i].id + ">Edit</button>";
+                        
                     }catch(error){
                         console.log(error);
                     }
