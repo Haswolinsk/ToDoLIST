@@ -21,7 +21,7 @@
     .todolist{
         padding: 10px;
         margin: 20px auto;
-        background-color: rgb(0, 255, 255);
+        background-color: bisque;
         border: 5px solid;
     }
     .inputs{
@@ -53,7 +53,7 @@
         background-color: red;
         margin: 10px;
         height: 36px;
-        width: 35px;
+        width: 61px;
         font-size: larger;
         font-weight: bold;
     }
@@ -77,15 +77,16 @@
     h1{
         text-align: center;
     }
-    ul{
+    tbody{
         height: 100%;
         list-style-type: disclosure-closed ;
         overflow-y: scroll;
+        
         margin-top: 0px;
         margin-bottom: 0px;
     }
-    li{
-        margin-right: 9px;
+    td{
+        width: 10%;
     }
     hr{
         margin-top: 0px;
@@ -111,13 +112,13 @@
         </form>
 
         <div class="todolist">
-            <div id="list" style="height: 200px; background-color: bisque;">
+            
                 <table>
                     <tbody>
 
                     </tbody>
                 </table>
-            </div>
+            
         </div>
     </div>
 
@@ -146,10 +147,10 @@ function getTasks() {
                         const cell3 = row.insertCell(2);
                         const cell4 = row.insertCell(3);
                         const cell5 = row.insertCell(4);
-                        cell1.innerHTML += "<hr><h2 class='desc'>" + data[i].task + " || ";
-                        cell2.innerHTML += data[i].deadline + "</h2>";
-                        cell3.innerHTML += "<p class='desc'>" + data[i].description+"</p>";
-                        cell4.innerHTML += "<button class='remove' onclick='edit("+ data[i].id +")' id-data=" + data[i].id + ">X</button>";
+                        cell1.innerHTML += "<p class='desc'>" + data[i].task + " ";
+                        cell2.innerHTML += "<p class='desc'>" + data[i].deadline + " ";
+                        cell3.innerHTML += "<p class='desc' style:'width: 60%;'>" + data[i].description+"</p>";
+                        cell4.innerHTML += "<button class='remove' onclick='openEditModal(${data[i].id},'${data[i].task}','${data[i].Desc}','${data[i].DeadLine}')' id-data=" + data[i].id + ">Edit</button>";
                         cell5.innerHTML += "<button class='remove' onclick=deleteTask("+ data[i].id +")>X</button>";
                     }catch(error){
                         console.log(error);
@@ -221,15 +222,20 @@ function deleteTask(id) {
     })
 }
 
-function openEditModal(id, description) {
-    $('#list').modal('show');
+function openEditModal(id,Task, Desc, DeadLine) {
+    $('#edit').modal('show');
     $('#task-id').val(id);
-    $('#task-description').val(description);
+    $('#task-task').val(Task);
+    $('#task-desc').val(Desc);
+    $('#task-deadline').val(DeadLine);
 }
 
 function edit() {
     var id = $('#task-id').val();
     var description = $('#task-description').val();
+    var task1 = document.getElementById('Title').value;
+    var task2 = document.getElementById('Desc').value;
+    var task3 = document.getElementById('DeadLine').value;
     $.ajax({
         type: "PUT",
         url: `/todolist/${id}`,
