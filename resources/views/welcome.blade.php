@@ -40,12 +40,6 @@
         font-family: verdana;
         font-size: 16px ;
     }
-    .desc-remo{
-        word-break: break-all;
-        font-family: verdana;
-        font-size: 16px ;
-       
-    }
     .button{
         padding: 0px 12px;
         margin-left: auto;
@@ -87,15 +81,11 @@
         height: 100%;
         list-style-type: disclosure-closed ;
         overflow-y: scroll;
-        
         margin-top: 0px;
         margin-bottom: 0px;
     }
     td{
         width: 0%;
-    }
-    hr{
-        margin-top: 0px;
     }
     input{
         padding: 5px 10px;
@@ -150,7 +140,7 @@ function getTasks() {
                         const cell2 = row.insertCell(1);
                         const cell3 = row.insertCell(2);
                         cell1.innerHTML += "<h2 class='desc'>" + data[i].task + " || " + data[i].deadline + "</h2>";
-                        cell2.innerHTML += "<p class='desc-remo'>" + data[i].description+"</p>";
+                        cell2.innerHTML += "<p class='desc'>" + data[i].description+"</p>";
                         cell3.innerHTML += "<button class='remove' onclick=deleteTask("+ data[i].id +")>X</button>";
                         cell3.innerHTML += "<button class='remove' onclick='openEditModal(${data[i].id},'${data[i].task}','${data[i].Desc}','${data[i].DeadLine}')' id-data=" + data[i].id + ">Edit</button>";
                         
