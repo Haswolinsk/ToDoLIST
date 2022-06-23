@@ -112,6 +112,11 @@
 
         <div class="todolist">
             <div id="list" style="height: 200px; background-color: bisque;">
+                <table>
+                    <tbody>
+
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -129,20 +134,49 @@ function getTasks() {
         url: "/todolist",
         success: function (data) {
             console.log(data);
-            var Tasks = [];
+
+            if (data.length > 0) {
+                const table = document.getElementsByTagName('tbody')[0];
+                table.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    try {
+                        const row = table.insertRow(i);
+                        const list1 = row.insertCell(0);
+                        const list2 = row.insertCell(1);
+                        const list3 = row.insertCell(2);
+                        const list4 = row.insertCell(3);
+                        const list5 = row.insertCell(4);
+                        list1.innerHTML += "<button class='remove' onclick='edit(this)' id-data=" + data[i].id + ">X</button>";
+                        list2.innerHTML += "<button class='remove' onclick=deleteTask(this) id-data=" + data[i].id + ">X</button>";
+                        list3.innerHTML += "<hr><li><h2 class='desc'>" + data[i].Title + " || ";
+                        list4.innerHTML += data[i].DeadLine + "</h2>";
+                        list5.innerHTML += "<p class='desc'>" + data[i].Description+"</p></li>";
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            } else {
+                var row = table.insertRow(0);
+                var list = row.insertlist(0);
+
+                list.innerHTML = 'No tasks';
+            }
+
+
+            /* var Tasks = [];
             if(data.length> 0){
                 var list = "<ul>";
                 Tasks.forEach(data => {
-                    list += "<button class='remove' onclick='edit(this)' id-data=" + data[i].id + ">X</button>"
-                    list += "<button class='remove' onclick=deleteTask(this) id-data=" + data[i].id + ">X</button>"
-                    list += "<hr><li><h2 class='desc'>" + data.data.Title + " || "
-                    list += data[i].data.DeadLine + "</h2>"
-                    list += "<p class='desc'>" + data[i].data.Description+"</p></li>"
+                    list += "<button class='remove' onclick='edit(this)' id-data=" + data[i].id + ">X</button>";
+                    list += "<button class='remove' onclick=deleteTask(this) id-data=" + data[i].id + ">X</button>";
+                    list += "<hr><li><h2 class='desc'>" + data.data.Title + " || ";
+                    list += data[i].data.DeadLine + "</h2>";
+                    list += "<p class='desc'>" + data[i].data.Description+"</p></li>";
                 });
                 list += "</ul>";
                 document.getElementById("list").innerHTML = list;
                 document.getElementById("Title").value = "";
-            }
+            } */
             
         },
         error: function (error) {
