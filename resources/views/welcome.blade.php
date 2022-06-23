@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToDoList</title>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <style>
@@ -96,7 +97,7 @@
     }
     </style>
 </head>
-<body>
+<body onload="initialyze()">
     <div class="container">
         <h1>ToDoList</h1>
         <form class="inputs" >
@@ -104,9 +105,9 @@
                 <input type="text" id="Title" placeholder="Titulo" size="20">
                 <input type="date" id="DeadLine">
                 <input class='button' type="reset" value="Limpar" onmouseover="PointerEvent">
-                <input class="button" type="button" value="Adicionar" onclick="newTitle()" onmouseover="PointerEvent" style="margin-left: 0px;"><br>
+                <input class="button" type="button" value="Adicionar" onclick="saveTasks()" onmouseover="PointerEvent" style="margin-left: 0px;"><br>
             </div>
-            <textarea id="Desc" cols="300" rows="5" placeholder="Descrição..." style="resize: none; font-size: 18px; font-family: verdana; margin-bottom: 2%;"></textarea>
+            <textarea id="Desc" cols="300" rows="5 placeholder="Descrição..." style="resize: none; font-size: 18px; font-family: verdana; margin-bottom: 2%;"></textarea>
         </form>
 
         <div class="todolist">
@@ -118,76 +119,99 @@
 </body>
 <script type='text/javascript'>
 
-var Tasks = [];
+function initialyze() {
+    getTasks();
+}
 
-function createTask(taskTitle, taskDesc, taskDeadLine){
-    var Title = {
-        id: idGenerator(),
-        data: {
-            Title: taskTitle,
-            Description: taskDesc,
-            DeadLine: taskDeadLine
+function getTasks() {
+    $.ajax({
+        type: "GET",
+        url: "/todolist",
+        success: function (data) {
+            console.log(data);
+            var Tasks = [];
+            if(data.length> 0){
+                var list = "<ul>";
+                Tasks.forEach(data => {
+                    list += "<button class='remove' onclick='edit(this)' id-data=" + data[i].id + ">X</button>"
+                    list += "<button class='remove' onclick=deleteTask(this) id-data=" + data[i].id + ">X</button>"
+                    list += "<hr><li><h2 class='desc'>" + data.data.Title + " || "
+                    list += data[i].data.DeadLine + "</h2>"
+                    list += "<p class='desc'>" + data[i].data.Description+"</p></li>"
+                });
+                list += "</ul>";
+                document.getElementById("list").innerHTML = list;
+                document.getElementById("Title").value = "";
+            }
+            
+        },
+        error: function (error) {
+            alert(`Error ${error}`);
         }
-    };
-    Tasks.push(Title); //ajax
+    })
 }
 
-function deleteTask(id){
-    console.log(Element)
-    Tasks = Tasks.filter(Title => Title.id != id);
-
-    updateScreen();
+function saveTasks() {
+    const task1 = document.getElementById('Title').value;
+    const task2 = document.getElementById('Desc').value;
+    const task3 = document.getElementById('DeadLine').value;
+    $.ajax({
+        type: "POST",
+        url: "/todolist",
+        data: {
+            task: task1,
+            description: task2,
+            deadline: task3,
+        },
+        success: function (data) {
+            console.log(data);
+            getTasks();
+        },
+        error: function (error) {
+            alert(`Error ${error}`);
+        }
+    })
 }
 
-
-function newTitle(){
-    var taskTitle = document.getElementById("Title").value;
-    var taskDesc = document.getElementById("Desc").value;
-    var taskDeadLine = document.getElementById("DeadLine").value;
-
-    if(document.getElementById("Title").value){
-        createTask(taskTitle, taskDesc, taskDeadLine);
-    }
-    
-    updateScreen();
+function deleteTask(id) {
+    $.ajax({
+        type: "DELETE",
+        url: `/todolist/${id}`,
+        success: function (data) {
+            console.log(data);
+            getTasks();
+        },
+        error: function (error) {
+            alert(`Error ${error}`);
+        }
+    })
 }
 
-function updateScreen(){
-    var list = "<ul>";
-
-    Tasks.forEach(Task => {
-        list += "<button class='remove' onclick='editTask(this)' id-data=" + Task.id + ">X</button>"
-        list += "<button class='remove' onclick=removeTask(this) id-data=" + Task.id + ">X</button>"
-        list += "<hr><li><h2 class='desc'>" + Task.data.Title + " || "
-        list += Task.data.DeadLine + "</h2>"
-        list += "<p class='desc'>" + Task.data.Description+"</p></li>"
-    });
-    list += "</ul>";
-
-    document.getElementById("list").innerHTML = list;
-    document.getElementById("Title").value = "";
+function openEditModal(id, description) {
+    $('#list').modal('show');
+    $('#task-id').val(id);
+    $('#task-description').val(description);
 }
 
-function editTask(Element){
-    console.log(Element)
-    var id = Element.getAttribute("id-data");
-
-
-
-    alterarTask(id); //ajax
-    updateScreen();
-}
-
-function alterarTask(){
-
-}
-
-function removeTask(Element){
-    console.log(Element)
-    var id = Element.getAttribute("id-data");
-
-    deleteTask(id); //ajax
-    updateScreen();
+function edit() {
+    var id = $('#task-id').val();
+    var description = $('#task-description').val();
+    $.ajax({
+        type: "PUT",
+        url: `/todolist/${id}`,
+        data: {
+            task: task1,
+            description: task2,
+            deadline: task3,
+        },
+        success: function (data) {
+            console.log(data);
+            getTasks();
+        },
+        error: function (error) {
+            alert(`Error ${error}`);
+        }
+    })
 }
 
 </script>
