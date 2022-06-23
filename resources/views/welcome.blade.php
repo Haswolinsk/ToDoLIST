@@ -77,6 +77,9 @@
     h1{
         text-align: center;
     }
+    table{
+        min-height:200px;
+    }
     tbody{
         height: 100%;
         list-style-type: disclosure-closed ;
