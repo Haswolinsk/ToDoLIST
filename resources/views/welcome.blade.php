@@ -112,13 +112,11 @@
         </form>
 
         <div class="todolist">
-            
                 <table>
                     <tbody>
 
                     </tbody>
                 </table>
-            
         </div>
     </div>
 
@@ -161,24 +159,7 @@ function getTasks() {
                 var cell = row.insertCell(0);
 
                 cell.innerHTML = 'No tasks';
-            }
-
-
-            /* var Tasks = [];
-            if(data.length> 0){
-                var list = "<ul>";
-                Tasks.forEach(data => {
-                    list += "<button class='remove' onclick='edit(this)' id-data=" + data[i].id + ">X</button>";
-                    list += "<button class='remove' onclick=deleteTask(this) id-data=" + data[i].id + ">X</button>";
-                    list += "<hr><li><h2 class='desc'>" + data.data.Title + " || ";
-                    list += data[i].data.DeadLine + "</h2>";
-                    list += "<p class='desc'>" + data[i].data.Description+"</p></li>";
-                });
-                list += "</ul>";
-                document.getElementById("list").innerHTML = list;
-                document.getElementById("Title").value = "";
-            } */
-            
+            }            
         },
         error: function (error) {
             alert(`Error ${error}`);
