@@ -21,7 +21,7 @@
     .todolist{
         padding: 10px;
         margin: 20px auto;
-        background-color: rgb(0, 255, 255);
+        background-color: bisque;
         border: 5px solid;
     }
     .inputs{
@@ -53,7 +53,7 @@
         background-color: red;
         margin: 10px;
         height: 36px;
-        width: 35px;
+        width: 61px;
         font-size: larger;
         font-weight: bold;
     }
@@ -77,18 +77,18 @@
     h1{
         text-align: center;
     }
-    ul{
+    table{
+        min-height:200px;
+    }
+    tbody{
         height: 100%;
         list-style-type: disclosure-closed ;
         overflow-y: scroll;
         margin-top: 0px;
         margin-bottom: 0px;
     }
-    li{
-        margin-right: 9px;
-    }
-    hr{
-        margin-top: 0px;
+    td{
+        width: 4%;
     }
     input{
         padding: 5px 10px;
@@ -111,8 +111,11 @@
         </form>
 
         <div class="todolist">
-            <div id="list" style="height: 200px; background-color: bisque;">
-            </div>
+                <table>
+                    <tbody>
+
+                    </tbody>
+                </table>
         </div>
     </div>
 
@@ -129,21 +132,31 @@ function getTasks() {
         url: "/todolist",
         success: function (data) {
             console.log(data);
-            var Tasks = [];
-            if(data.length> 0){
-                var list = "<ul>";
-                Tasks.forEach(data => {
-                    list += "<button class='remove' onclick='edit(this)' id-data=" + data[i].id + ">X</button>"
-                    list += "<button class='remove' onclick=deleteTask(this) id-data=" + data[i].id + ">X</button>"
-                    list += "<hr><li><h2 class='desc'>" + data.data.Title + " || "
-                    list += data[i].data.DeadLine + "</h2>"
-                    list += "<p class='desc'>" + data[i].data.Description+"</p></li>"
-                });
-                list += "</ul>";
-                document.getElementById("list").innerHTML = list;
-                document.getElementById("Title").value = "";
-            }
-            
+
+            if (data.length > 0) {
+                const table = document.getElementsByTagName('tbody')[0];
+                table.innerHTML = "";
+                for (var i = 0; i <data.length; i++) {
+                    try{
+                        const row = table.insertRow(i);
+                        const cell1 = row.insertCell(0);
+                        const cell2 = row.insertCell(1);
+                        const cell3 = row.insertCell(2);
+                        cell1.innerHTML += "<h2 class='desc'>" + data[i].task + " || " + data[i].deadline + "</h2>";
+                        cell2.innerHTML += "<p class='desc'>" + data[i].description+"</p>";
+                        cell3.innerHTML += "<button class='remove' onclick=deleteTask("+ data[i].id +")>X</button>";
+                        cell3.innerHTML += "<button class='remove' onclick='openEditModal(${data[i].id},'${data[i].task}','${data[i].Desc}','${data[i].DeadLine}')' id-data=" + data[i].id + ">Edit</button>";
+                        
+                    }catch(error){
+                        console.log(error);
+                    }
+                }
+            } else {
+                var row = table.insertRow(0);
+                var cell = row.insertCell(0);
+
+                cell.innerHTML = 'No tasks';
+            }            
         },
         error: function (error) {
             alert(`Error ${error}`);
@@ -152,9 +165,9 @@ function getTasks() {
 }
 
 function saveTasks() {
-    const task1 = document.getElementById('Title').value;
-    const task2 = document.getElementById('Desc').value;
-    const task3 = document.getElementById('DeadLine').value;
+    var task1 = document.getElementById('Title').value;
+    var task2 = document.getElementById('Desc').value;
+    var task3 = document.getElementById('DeadLine').value;
     $.ajax({
         type: "POST",
         url: "/todolist",
@@ -187,15 +200,20 @@ function deleteTask(id) {
     })
 }
 
-function openEditModal(id, description) {
-    $('#list').modal('show');
+function openEditModal(id,Task, Desc, DeadLine) {
+    $('#edit').modal('show');
     $('#task-id').val(id);
-    $('#task-description').val(description);
+    $('#task-task').val(Task);
+    $('#task-desc').val(Desc);
+    $('#task-deadline').val(DeadLine);
 }
 
 function edit() {
     var id = $('#task-id').val();
     var description = $('#task-description').val();
+    var task1 = document.getElementById('Title').value;
+    var task2 = document.getElementById('Desc').value;
+    var task3 = document.getElementById('DeadLine').value;
     $.ajax({
         type: "PUT",
         url: `/todolist/${id}`,
