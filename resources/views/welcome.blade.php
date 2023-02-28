@@ -129,7 +129,7 @@ function initialyze() {
 function getTasks() {
     $.ajax({
         type: "GET",
-        url: "/todolist",
+        url: `/todolist`,
         success: function (data) {
             console.log(data);
 
